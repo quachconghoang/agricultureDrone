@@ -16,14 +16,14 @@ find_package(libbsoncxx REQUIRED)
 find_package(libmongocxx REQUIRED)
 
 add_executable(IoT-Dashboard
-  main.cpp
-  mainwindow.cpp
-  mainwindow.h
-  mainwindow.ui
-  resources.qrc
-  ToggleButton.cpp
-  ToggleButton.h
-        SensorsMQTT.cpp SensorsMQTT.h)
+        main.cpp
+        resources.qrc
+        mainwindow.cpp mainwindow.h mainwindow.ui
+        SensorsMQTT.cpp SensorsMQTT.h
+        ToggleButton.cpp ToggleButton.h
+        RoundGaugeGraphicsObject.cpp RoundGaugeGraphicsObject.h
+        MushroomView.cpp MushroomView.h MushroomView.ui
+        )
 
 include_directories(${LIBMONGOCXX_INCLUDE_DIR})
 include_directories(${LIBBSONCXX_INCLUDE_DIR})

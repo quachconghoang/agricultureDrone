@@ -39,16 +39,16 @@ int SensorsMQTT::initHosting() {
     QJsonArray array = QJsonDocument::fromJson(val.toUtf8()).array();
     for(int i = 0; i < array.size(); i++){
         QJsonObject t_obj = array[i].toObject();
-        m_hostnames.push_back(t_obj["hostname"].toString());
-//        qDebug()<< i << "-" <<m_hostnames[i];
+        hostnames.push_back(t_obj["hostname"].toString());
+//        qDebug()<< i << "-" <<hostnames[i];
     }
     return 0;
 }
 
 int SensorsMQTT::loadSensorParameters(int index) {
-    m_mongodb_uri = "mongodb://" + m_hostnames[index].toStdString() + ":" + std::to_string(27017);
+    m_mongodb_uri = "mongodb://" + hostnames[index].toStdString() + ":" + std::to_string(27017);
     std::cout<< m_mongodb_uri <<"\n";
-    m_sensorNodes.clear();
+    sensorNodes.clear();
     qDebug() << "initSensorParameters";
 
     mongocxx::instance instance{};
@@ -62,7 +62,7 @@ int SensorsMQTT::loadSensorParameters(int index) {
         node.topic_sensor = doc["topic-sensor"].get_string().value.to_string();
         node.topic_control = doc["topic-control"].get_string().value.to_string();
         node.token = doc["token"].get_string().value.to_string();
-        m_sensorNodes.push_back(node);
+        sensorNodes.push_back(node);
 //        std::cout << bsoncxx::to_json(doc) << "\n";
 //        std::cout << topic_1.get_string().value << "\n";
 //        std::cout << topic_2.get_string().value << "\n";

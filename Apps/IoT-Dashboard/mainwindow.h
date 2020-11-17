@@ -22,6 +22,10 @@ private:
     QMqttClient *m_client;
     SensorsMQTT m_sensors;
 
+    int m_current_dev;
+    QString m_current_sub;
+    QString m_current_pub;
+
     void setupMQTT(QString hostName, qint16 port);
 
 private slots:

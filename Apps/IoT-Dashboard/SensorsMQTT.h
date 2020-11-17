@@ -26,8 +26,8 @@ public:
     int initHosting();
     int loadSensorParameters(int index=0);
 
-    std::vector<QString> m_hostnames;
-    std::vector<SensorNode> m_sensorNodes;
+    std::vector<QString> hostnames;
+    std::vector<SensorNode> sensorNodes;
 
 private:
 //    std::string dbFile_Login;

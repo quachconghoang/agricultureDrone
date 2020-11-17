@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
 //    qDebug()<<("Compiled with Qt Version %s\n", QT_VERSION_STR);
     m_sensors.initHosting();
 
-    for (QString host : m_sensors.m_hostnames){
+    for (QString host : m_sensors.hostnames){
         ui->hostBox->addItem(host);
         if(QUrl(host+":1880").isValid()) ui->hostBox->setCurrentIndex(ui->hostBox->findText(host));
     }
@@ -29,30 +29,22 @@ MainWindow::MainWindow(QWidget *parent)
 
     QIcon deviceIco = QIcon(":/Images/Resources/machine.png");
 //    deviceIco
-    for (int i = 0; i < m_sensors.m_sensorNodes.size(); ++i) {
-        SensorNode node = m_sensors.m_sensorNodes[i];
+    for (int i = 0; i < m_sensors.sensorNodes.size(); ++i) {
+        SensorNode node = m_sensors.sensorNodes[i];
         ui->devicesBox->addItem(deviceIco, QString::fromStdString(node.topic_sensor));
     }
-
+    m_current_dev = -1;
+    ui->devicesBox->setCurrentIndex(m_current_dev);
 
     connect(ui->devicesBox, SIGNAL(currentIndexChanged(int)), this, SLOT(currentDeviceChanged(int)));
+    setupMQTT(m_sensors.hostnames[ui->hostBox->currentIndex()],1883);
 
-//    QStandardItemModel *model = qobject_cast<QStandardItemModel *>(ui->devicesBox->model());
-//    Q_ASSERT(model != nullptr);
-//    bool disabled = true;
-//    QStandardItem *item = model->item(2);
-//    item->setFlags(disabled ? item->flags() & ~Qt::ItemIsEnabled : item->flags() | Qt::ItemIsEnabled);
-
-
-//    setupMQTT("127.0.0.1",1883);
 //    QTimer::singleShot(1000, this, [this]{
-//        auto subscription = m_client->subscribe(QString("demo/test"), quint8(2));
-//        subscription = m_client->subscribe(QString("demo/test-2"), quint8(2));
+//        auto subscription = m_client->subscribe(QString::fromStdString("demo/test"), quint8(2));
 //        if (!subscription) {
 //            qDebug()<<"Could not subscribe. Is there a valid connection?";
 //        }
 //    });
-
     /*
     QWidget *widget = new QWidget;
     widget->setWindowFlags(Qt::FramelessWindowHint);
@@ -90,7 +82,6 @@ void MainWindow::setupMQTT(QString hostName, qint16 port) {
     });
 
     m_client->connectToHost();
-
 }
 
 void MainWindow::updateLogStateChange() {
@@ -103,5 +94,15 @@ void MainWindow::updateLogStateChange() {
 
 void MainWindow::currentDeviceChanged(int dev_id) {
     qDebug()<<dev_id;
+    if(dev_id == m_current_dev) return;
+
+    m_client->unsubscribe(m_current_sub);
+
+    m_current_dev = dev_id;
+    m_current_sub = QString::fromStdString(m_sensors.sensorNodes[m_current_dev].topic_sensor);
+    m_current_pub = QString::fromStdString(m_sensors.sensorNodes[m_current_dev].topic_control);
+
+    auto subscription = m_client->subscribe(m_current_sub, quint8(2));
+    if (!subscription) qDebug()<<"Could not subscribe. Is there a valid connection?";
 }
 
