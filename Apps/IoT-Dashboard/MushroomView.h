@@ -15,8 +15,13 @@ public:
     explicit MushroomView(QWidget *parent = nullptr);
     ~MushroomView();
 
+    void setValueFromJSON(QString json);
+
 private:
     Ui::MushroomView *ui;
+
+private slots:
+
 };
 
 #endif // MUSHROOMVIEW_H

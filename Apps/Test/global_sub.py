@@ -53,6 +53,7 @@ mqttc.on_subscribe = on_subscribe
 # mqttc.on_log = on_log
 mqttc.connect("hoangqc.myftp.org", 1883, 60)
 mqttc.subscribe("sensor/mushroom/001", qos=0)
+mqttc.subscribe("ctrl/mushroom/001", qos=0)
 # mqttc.subscribe("demo/test-2", qos=0)
 
 mqttc.loop_forever()
