@@ -12,8 +12,8 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(Qt5 COMPONENTS Widgets Mqtt REQUIRED)
-find_package(libbsoncxx REQUIRED)
-find_package(libmongocxx REQUIRED)
+#find_package(libbsoncxx REQUIRED)
+#find_package(libmongocxx REQUIRED)
 
 add_executable(IoT-Dashboard
         main.cpp
@@ -25,13 +25,13 @@ add_executable(IoT-Dashboard
         MushroomView.cpp MushroomView.h MushroomView.ui
         )
 
-include_directories(${LIBMONGOCXX_INCLUDE_DIR})
-include_directories(${LIBBSONCXX_INCLUDE_DIR})
-include_directories("/usr/local/include/mongocxx/v_noabi")
-include_directories("/usr/local/include/bsoncxx/v_noabi")
-include_directories("/usr/local/include/libmongoc-1.0")
-include_directories("/usr/local/include/libbson-1.0")
+#include_directories(${LIBMONGOCXX_INCLUDE_DIR})
+#include_directories(${LIBBSONCXX_INCLUDE_DIR})
+#include_directories("/usr/local/include/mongocxx/v_noabi")
+#include_directories("/usr/local/include/bsoncxx/v_noabi")
+#include_directories("/usr/local/include/libmongoc-1.0")
+#include_directories("/usr/local/include/libbson-1.0")
 
 target_link_libraries(IoT-Dashboard PRIVATE Qt5::Widgets Qt5::Mqtt)
-target_link_libraries(IoT-Dashboard PRIVATE ${LIBMONGOCXX_LIBRARIES})
-target_link_libraries(IoT-Dashboard PRIVATE ${LIBBSONCXX_LIBRARIES})
+#target_link_libraries(IoT-Dashboard PRIVATE ${LIBMONGOCXX_LIBRARIES})
+#target_link_libraries(IoT-Dashboard PRIVATE ${LIBBSONCXX_LIBRARIES})

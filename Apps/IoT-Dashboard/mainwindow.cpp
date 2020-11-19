@@ -36,15 +36,8 @@ MainWindow::MainWindow(QWidget *parent)
     m_current_dev = -1;
     ui->devicesBox->setCurrentIndex(m_current_dev);
 
-    connect(ui->devicesBox, SIGNAL(currentIndexChanged(int)), this, SLOT(currentDeviceChanged(int)));
     setupMQTT(m_sensors.hostnames[ui->hostBox->currentIndex()],1883);
 
-//    QTimer::singleShot(1000, this, [this]{
-//        auto subscription = m_client->subscribe(QString::fromStdString("demo/test"), quint8(2));
-//        if (!subscription) {
-//            qDebug()<<"Could not subscribe. Is there a valid connection?";
-//        }
-//    });
     /*
     QWidget *widget = new QWidget;
     widget->setWindowFlags(Qt::FramelessWindowHint);
@@ -56,7 +49,8 @@ MainWindow::MainWindow(QWidget *parent)
     layout.addWidget(toggleButton2);
     widget->show();
  */
-
+    connect(ui->devicesBox, SIGNAL(currentIndexChanged(int)), this, SLOT(currentDeviceChanged(int)));
+    connect(ui->hostBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateServer(int)));
 }
 
 MainWindow::~MainWindow()
@@ -65,12 +59,10 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::setupMQTT(QString hostName, qint16 port) {
-    m_client = new QMqttClient(this);
+    m_client = new QMqttClient();
     m_client->setHostname(hostName);
     m_client->setPort(port);
-
-    //    connect(m_client, &QMqttClient::disconnected, this, &MainWindow::brokerDisconnected);
-    connect(m_client, &QMqttClient::stateChanged, this, &MainWindow::updateLogStateChange);
+//    connect(m_client, &QMqttClient::stateChanged, this, &MainWindow::updateLogStateChange);
     connect(m_client, &QMqttClient::messageReceived, this, [this](const QByteArray &message, const QMqttTopicName &topic) {
         const QString content = QDateTime::currentDateTime().toString()
                                 + QLatin1String(" Received Topic: ")
@@ -92,12 +84,17 @@ void MainWindow::updateLogStateChange() {
     qDebug()<< "updateLogStateChange: " <<content;
 }
 
+void MainWindow::updateServer(int serv_id) {
+    m_client->disconnectFromHost();
+    setupMQTT(m_sensors.hostnames[serv_id],1883);
+    ui->devicesBox->setCurrentIndex(-1);
+}
+
 void MainWindow::currentDeviceChanged(int dev_id) {
-    qDebug()<<dev_id;
+//    qDebug()<<dev_id;
     if(dev_id == m_current_dev) return;
 
     m_client->unsubscribe(m_current_sub);
-
     m_current_dev = dev_id;
     m_current_sub = QString::fromStdString(m_sensors.sensorNodes[m_current_dev].topic_sensor);
     m_current_pub = QString::fromStdString(m_sensors.sensorNodes[m_current_dev].topic_control);

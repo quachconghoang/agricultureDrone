@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QFile>
 
+/*
 #ifndef MONGODB
 #define MONGODB
 #include <cstdint>
@@ -23,6 +24,7 @@
 #include <bsoncxx/builder/stream/document.hpp>
 #include <bsoncxx/builder/stream/array.hpp>
 #endif
+*/
 
 SensorsMQTT::SensorsMQTT() {
 
@@ -46,6 +48,25 @@ int SensorsMQTT::initHosting() {
 }
 
 int SensorsMQTT::loadSensorParameters(int index) {
+    QFile file(":Data/Database/devices.json");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QString val = file.readAll();
+    file.close();
+    QJsonArray a = QJsonDocument::fromJson(val.toUtf8()).array();
+
+    for (int i = 0; i < a.count(); ++i) {
+        QJsonValue v = a[i];
+        SensorNode node;
+        node.topic_sensor = v["topic-sensor"].toString().toStdString();
+        node.topic_control = v["topic-control"].toString().toStdString();
+        node.token = v["token"].toString().toStdString();
+        sensorNodes.push_back(node);
+    }
+    return 0;
+}
+
+/*
+int SensorsMQTT::loadSensorParameters(int index) {
     m_mongodb_uri = "mongodb://" + hostnames[index].toStdString() + ":" + std::to_string(27017);
     std::cout<< m_mongodb_uri <<"\n";
     sensorNodes.clear();
@@ -65,8 +86,8 @@ int SensorsMQTT::loadSensorParameters(int index) {
         sensorNodes.push_back(node);
 //        std::cout << bsoncxx::to_json(doc) << "\n";
 //        std::cout << topic_1.get_string().value << "\n";
-//        std::cout << topic_2.get_string().value << "\n";
+//        std::cout << topic_2.g`et_string().value << "\n";
     }
-
     return 0;
 }
+ */

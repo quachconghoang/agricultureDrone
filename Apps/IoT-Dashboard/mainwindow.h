@@ -29,9 +29,8 @@ private:
     void setupMQTT(QString hostName, qint16 port);
 
 private slots:
-//    void on_buttonConnect_clicked();
-//    void on_buttonQuit_clicked();
     void updateLogStateChange();
+    void updateServer(int serv_id);
     void currentDeviceChanged(int dev_id);
 //    void brokerDisconnected();
 //    void on_buttonPublish_clicked();

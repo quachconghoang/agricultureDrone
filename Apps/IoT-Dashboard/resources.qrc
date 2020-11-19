@@ -5,4 +5,9 @@
     <file>Resources/machine-2.png</file>
     <file>Resources/mushroom-01.png</file>
   </qresource>
+  <qresource prefix="Data">
+    <file>Database/devices.json</file>
+    <file>Database/login.json</file>
+    <file>Database/mongodb.json</file>
+  </qresource>
 </RCC>
