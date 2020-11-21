@@ -35,7 +35,7 @@ SensorsMQTT::~SensorsMQTT() {
 }
 
 int SensorsMQTT::initHosting() {
-    QFile f("../Database/mongodb.json");
+    QFile f(":Data/Database/mongodb.json");
     f.open(QIODevice::ReadOnly | QIODevice::Text);
     QString val = f.readAll();
     QJsonArray array = QJsonDocument::fromJson(val.toUtf8()).array();

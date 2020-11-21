@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     for (QString host : m_sensors.hostnames){
         ui->hostBox->addItem(host);
-        if(QUrl(host+":1880").isValid()) ui->hostBox->setCurrentIndex(ui->hostBox->findText(host));
+        if(QUrl(host+":1883").isValid()) ui->hostBox->setCurrentIndex(ui->hostBox->findText(host));
     }
 
     m_sensors.loadSensorParameters(ui->hostBox->currentIndex());
@@ -62,7 +62,7 @@ void MainWindow::setupMQTT(QString hostName, qint16 port) {
     m_client = new QMqttClient();
     m_client->setHostname(hostName);
     m_client->setPort(port);
-//    connect(m_client, &QMqttClient::stateChanged, this, &MainWindow::updateLogStateChange);
+    connect(m_client, &QMqttClient::stateChanged, this, &MainWindow::updateLogStateChange);
     connect(m_client, &QMqttClient::messageReceived, this, [this](const QByteArray &message, const QMqttTopicName &topic) {
         const QString content = QDateTime::currentDateTime().toString()
                                 + QLatin1String(" Received Topic: ")
@@ -71,6 +71,7 @@ void MainWindow::setupMQTT(QString hostName, qint16 port) {
                                 + message
                                 + QLatin1Char('\n');
         qDebug() << content;
+        ui->devicesView->addItem(content);
     });
 
     m_client->connectToHost();

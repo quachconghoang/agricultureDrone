@@ -15,15 +15,29 @@ find_package(Qt5 COMPONENTS Widgets Mqtt REQUIRED)
 #find_package(libbsoncxx REQUIRED)
 #find_package(libmongocxx REQUIRED)
 
-add_executable(IoT-Dashboard
-        main.cpp
-        resources.qrc
-        mainwindow.cpp mainwindow.h mainwindow.ui
-        SensorsMQTT.cpp SensorsMQTT.h
-        ToggleButton.cpp ToggleButton.h
-        RoundGaugeGraphicsObject.cpp RoundGaugeGraphicsObject.h
-        MushroomView.cpp MushroomView.h MushroomView.ui
-        )
+
+
+if(ANDROID)
+  add_library(IoT-Dashboard SHARED
+      main.cpp
+      resources.qrc
+      mainwindow.cpp mainwindow.h mainwindow.ui
+      SensorsMQTT.cpp SensorsMQTT.h
+      ToggleButton.cpp ToggleButton.h
+      RoundGaugeGraphicsObject.cpp RoundGaugeGraphicsObject.h
+      MushroomView.cpp MushroomView.h MushroomView.ui
+  )
+else()
+  add_executable(IoT-Dashboard
+      main.cpp
+      resources.qrc
+      mainwindow.cpp mainwindow.h mainwindow.ui
+      SensorsMQTT.cpp SensorsMQTT.h
+      ToggleButton.cpp ToggleButton.h
+      RoundGaugeGraphicsObject.cpp RoundGaugeGraphicsObject.h
+      MushroomView.cpp MushroomView.h MushroomView.ui
+  )
+endif()
 
 #include_directories(${LIBMONGOCXX_INCLUDE_DIR})
 #include_directories(${LIBBSONCXX_INCLUDE_DIR})
