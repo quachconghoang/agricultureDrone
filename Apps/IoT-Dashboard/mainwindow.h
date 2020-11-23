@@ -32,6 +32,7 @@ private slots:
     void updateLogStateChange();
     void updateServer(int serv_id);
     void currentDeviceChanged(int dev_id);
+    void receiveMessage(const QByteArray &message, const QMqttTopicName &topic);
 //    void brokerDisconnected();
 //    void on_buttonPublish_clicked();
 //    void on_buttonSubscribe_clicked();

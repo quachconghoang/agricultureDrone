@@ -7,11 +7,16 @@ MushroomView::MushroomView(QWidget *parent) :
     ui(new Ui::MushroomView)
 {
     ui->setupUi(this);
+    ui->groupBox->setTitle("sensor number x");
 }
 
 MushroomView::~MushroomView()
 {
     delete ui;
+}
+
+void MushroomView::setTitle(QString text) {
+
 }
 
 void MushroomView::setValueFromJSON(QString json) {

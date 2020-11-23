@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ToggleButton.h"
 #include "./ui_mainwindow.h"
+#include <QGuiApplication>
+#include <QScreen>
 #include <QDebug>
 #include <QUrl>
 #include <QDateTime>
@@ -15,9 +17,17 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-//    this->setWindowFlags(Qt::FramelessWindowHint);
 //    this->showFullScreen();
-//    qDebug()<<("Compiled with Qt Version %s\n", QT_VERSION_STR);
+//    this->setWindowFlags(Qt::FramelessWindowHint);
+
+    QScreen * screen = QApplication::screens().at(0);
+    QSize screenSize = screen->availableSize();
+    qreal dotsPerInch = screen->logicalDotsPerInch();
+    Qt::ScreenOrientation orient = screen->orientation();
+    qDebug() << screenSize.width() << "-" << screenSize.height() << "dpi" << dotsPerInch;
+    qDebug() << "orient" << screen->orientation();
+    Qt::ScreenOrientation x = Qt::LandscapeOrientation;
+
     m_sensors.initHosting();
 
     for (QString host : m_sensors.hostnames){
@@ -63,16 +73,7 @@ void MainWindow::setupMQTT(QString hostName, qint16 port) {
     m_client->setHostname(hostName);
     m_client->setPort(port);
     connect(m_client, &QMqttClient::stateChanged, this, &MainWindow::updateLogStateChange);
-    connect(m_client, &QMqttClient::messageReceived, this, [this](const QByteArray &message, const QMqttTopicName &topic) {
-        const QString content = QDateTime::currentDateTime().toString()
-                                + QLatin1String(" Received Topic: ")
-                                + topic.name()
-                                + QLatin1String(" Message: ")
-                                + message
-                                + QLatin1Char('\n');
-        qDebug() << content;
-        ui->devicesView->addItem(content);
-    });
+    connect(m_client, &QMqttClient::messageReceived, this,  &MainWindow::receiveMessage);
 
     m_client->connectToHost();
 }
@@ -102,5 +103,17 @@ void MainWindow::currentDeviceChanged(int dev_id) {
 
     auto subscription = m_client->subscribe(m_current_sub, quint8(2));
     if (!subscription) qDebug()<<"Could not subscribe. Is there a valid connection?";
+}
+
+void MainWindow::receiveMessage(const QByteArray &message, const QMqttTopicName &topic) {
+    qDebug() << "receive";
+    const QString content = QDateTime::currentDateTime().toString()
+                            + QLatin1String(" Received Topic: ")
+                            + topic.name()
+                            + QLatin1String(" Message: ")
+                            + message
+                            + QLatin1Char('\n');
+    qDebug() << content;
+    ui->devicesView->addItem(content);
 }
 
