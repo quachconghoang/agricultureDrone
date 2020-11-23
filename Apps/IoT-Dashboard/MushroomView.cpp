@@ -7,7 +7,8 @@ MushroomView::MushroomView(QWidget *parent) :
     ui(new Ui::MushroomView)
 {
     ui->setupUi(this);
-    ui->groupBox->setTitle("sensor number x");
+//    ui->groupBox_0->setTitle("000");
+//    ui->groupBox->setTitle("sensor number x");
 }
 
 MushroomView::~MushroomView()

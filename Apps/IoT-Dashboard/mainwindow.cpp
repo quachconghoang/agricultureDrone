@@ -10,6 +10,7 @@
 #include <QtMqtt/QMqttClient>
 #include <iostream>
 #include <QStandardItemModel>
+#include "MushroomView.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -20,13 +21,22 @@ MainWindow::MainWindow(QWidget *parent)
 //    this->showFullScreen();
 //    this->setWindowFlags(Qt::FramelessWindowHint);
 
+    mushroomWidget = new MushroomView(this);
+//    ui->mainWidget->layout()->addWidget(ui->iot_1, mushroomWidget);
+    ui->mainWidget->layout()->replaceWidget(ui->iot_2, mushroomWidget);
+//    ui->mainWidget->layout()->removeWidget(ui->iot_1);
+//    ui->mainWidget->layout()->addWidget()
+
     QScreen * screen = QApplication::screens().at(0);
     QSize screenSize = screen->availableSize();
     qreal dotsPerInch = screen->logicalDotsPerInch();
     Qt::ScreenOrientation orient = screen->orientation();
-    qDebug() << screenSize.width() << "-" << screenSize.height() << "dpi" << dotsPerInch;
-    qDebug() << "orient" << screen->orientation();
+//    qDebug() << screenSize.width() << "-" << screenSize.height() << "dpi" << dotsPerInch;
+//    qDebug() << "orient" << screen->orientation();
     Qt::ScreenOrientation x = Qt::LandscapeOrientation;
+
+
+//    ui->widget_iot = new MushroomView(this);
 
     m_sensors.initHosting();
 
@@ -114,6 +124,6 @@ void MainWindow::receiveMessage(const QByteArray &message, const QMqttTopicName 
                             + message
                             + QLatin1Char('\n');
     qDebug() << content;
-    ui->devicesView->addItem(content);
+//    ui->devicesView->addItem(content);
 }
 

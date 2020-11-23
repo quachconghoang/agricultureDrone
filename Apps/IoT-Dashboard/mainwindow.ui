@@ -17,61 +17,69 @@
    <iconset resource="resources.qrc">
     <normaloff>:/Images/Resources/mushroom-01.png</normaloff>:/Images/Resources/mushroom-01.png</iconset>
   </property>
-  <widget class="QWidget" name="widget">
+  <widget class="QWidget" name="mainWidget">
+   <property name="minimumSize">
+    <size>
+     <width>480</width>
+     <height>854</height>
+    </size>
+   </property>
    <property name="autoFillBackground">
     <bool>false</bool>
    </property>
-   <widget class="QComboBox" name="hostBox">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>760</y>
-      <width>480</width>
-      <height>50</height>
-     </rect>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+    <property name="leftMargin">
+     <number>3</number>
     </property>
-   </widget>
-   <widget class="QListWidget" name="devicesView">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>813</y>
-      <width>480</width>
-      <height>41</height>
-     </rect>
+    <property name="topMargin">
+     <number>3</number>
     </property>
-   </widget>
-   <widget class="QComboBox" name="devicesBox">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>10</y>
-      <width>480</width>
-      <height>50</height>
-     </rect>
+    <property name="rightMargin">
+     <number>3</number>
     </property>
-    <property name="iconSize">
-     <size>
-      <width>40</width>
-      <height>40</height>
-     </size>
+    <property name="bottomMargin">
+     <number>3</number>
     </property>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>60</y>
-      <width>481</width>
-      <height>701</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <property name="spacing">
-      <number>6</number>
-     </property>
-    </layout>
-   </widget>
+    <item>
+     <widget class="QComboBox" name="devicesBox">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>50</height>
+       </size>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>40</width>
+        <height>40</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="iot_1" native="true">
+      <property name="minimumSize">
+       <size>
+        <width>480</width>
+        <height>320</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QWidget" name="iot_2" native="true"/>
+    </item>
+    <item>
+     <widget class="QComboBox" name="hostBox">
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>40</height>
+       </size>
+      </property>
+     </widget>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources>

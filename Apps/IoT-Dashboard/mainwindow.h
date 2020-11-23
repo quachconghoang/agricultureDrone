@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QMqttClient>
 #include "SensorsMQTT.h"
+#include "MushroomView.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -21,6 +22,7 @@ private:
     Ui::MainWindow *ui;
     QMqttClient *m_client;
     SensorsMQTT m_sensors;
+    MushroomView * mushroomWidget;
 
     int m_current_dev;
     QString m_current_sub;

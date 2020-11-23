@@ -7,25 +7,102 @@
     <x>0</x>
     <y>0</y>
     <width>480</width>
-    <height>480</height>
+    <height>320</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>480</width>
+    <height>320</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>480</width>
-     <height>480</height>
-    </rect>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
    </property>
-   <property name="title">
-    <string>GroupBox</string>
+   <property name="topMargin">
+    <number>3</number>
    </property>
-  </widget>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>3</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="hL_0">
+     <property name="spacing">
+      <number>3</number>
+     </property>
+     <item>
+      <widget class="QWidget" name="widget_0" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>154</width>
+         <height>160</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="widget_1" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>154</width>
+         <height>160</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QWidget" name="widget_2" native="true">
+       <property name="minimumSize">
+        <size>
+         <width>154</width>
+         <height>160</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hL_1">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string>Setup</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hL_2">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Light</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="hL_3">
+     <item>
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Temperature</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
