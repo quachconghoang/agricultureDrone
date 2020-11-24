@@ -42,6 +42,9 @@
     </property>
     <item>
      <widget class="QComboBox" name="devicesBox">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="minimumSize">
        <size>
         <width>0</width>
@@ -61,13 +64,10 @@
       <property name="minimumSize">
        <size>
         <width>480</width>
-        <height>320</height>
+        <height>672</height>
        </size>
       </property>
      </widget>
-    </item>
-    <item>
-     <widget class="QWidget" name="iot_2" native="true"/>
     </item>
     <item>
      <widget class="QComboBox" name="hostBox">

@@ -21,25 +21,18 @@ MainWindow::MainWindow(QWidget *parent)
 //    this->showFullScreen();
 //    this->setWindowFlags(Qt::FramelessWindowHint);
 
-    mushroomWidget = new MushroomView(this);
-//    ui->mainWidget->layout()->addWidget(ui->iot_1, mushroomWidget);
-    ui->mainWidget->layout()->replaceWidget(ui->iot_2, mushroomWidget);
-//    ui->mainWidget->layout()->removeWidget(ui->iot_1);
-//    ui->mainWidget->layout()->addWidget()
-
     QScreen * screen = QApplication::screens().at(0);
     QSize screenSize = screen->availableSize();
     qreal dotsPerInch = screen->logicalDotsPerInch();
     Qt::ScreenOrientation orient = screen->orientation();
-//    qDebug() << screenSize.width() << "-" << screenSize.height() << "dpi" << dotsPerInch;
-//    qDebug() << "orient" << screen->orientation();
     Qt::ScreenOrientation x = Qt::LandscapeOrientation;
 
+    mushroomWidget = new MushroomView(ui->iot_1);
+//    ui->mainWidget->layout()->replaceWidget(ui->iot_1, mushroomWidget);
 
 //    ui->widget_iot = new MushroomView(this);
 
     m_sensors.initHosting();
-
     for (QString host : m_sensors.hostnames){
         ui->hostBox->addItem(host);
         if(QUrl(host+":1883").isValid()) ui->hostBox->setCurrentIndex(ui->hostBox->findText(host));
@@ -52,12 +45,15 @@ MainWindow::MainWindow(QWidget *parent)
     for (int i = 0; i < m_sensors.sensorNodes.size(); ++i) {
         SensorNode node = m_sensors.sensorNodes[i];
         ui->devicesBox->addItem(deviceIco, QString::fromStdString(node.topic_sensor));
+        qDebug() << QString::fromStdString(node.topic_sensor);
     }
-    m_current_dev = -1;
-    ui->devicesBox->setCurrentIndex(m_current_dev);
+//    m_current_dev = -1;
+//    ui->devicesBox->setCurrentIndex(m_current_dev);
 
     setupMQTT(m_sensors.hostnames[ui->hostBox->currentIndex()],1883);
 
+
+//    qDebug()<<b->geometry();
     /*
     QWidget *widget = new QWidget;
     widget->setWindowFlags(Qt::FramelessWindowHint);
@@ -103,7 +99,7 @@ void MainWindow::updateServer(int serv_id) {
 }
 
 void MainWindow::currentDeviceChanged(int dev_id) {
-//    qDebug()<<dev_id;
+    qDebug()<<dev_id;
     if(dev_id == m_current_dev) return;
 
     m_client->unsubscribe(m_current_sub);
