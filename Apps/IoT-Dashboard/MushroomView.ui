@@ -20,6 +20,9 @@
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>3</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -47,40 +50,71 @@
       <number>3</number>
      </property>
      <property name="spacing">
-      <number>6</number>
+      <number>3</number>
      </property>
-     <item row="0" column="0">
-      <widget class="QWidget" name="widget_0" native="true">
+     <item row="1" column="1">
+      <widget class="QGraphicsView" name="graphicsView_3">
        <property name="minimumSize">
         <size>
          <width>234</width>
          <height>234</height>
         </size>
        </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QWidget" name="widget_1" native="true">
-       <property name="minimumSize">
-        <size>
-         <width>234</width>
-         <height>234</height>
-        </size>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
-      <widget class="QWidget" name="widget_2" native="true">
+      <widget class="QGraphicsView" name="graphicsView_2">
        <property name="minimumSize">
         <size>
          <width>234</width>
          <height>234</height>
         </size>
        </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
       </widget>
      </item>
-     <item row="1" column="1">
-      <widget class="QWidget" name="widget_3" native="true"/>
+     <item row="0" column="1">
+      <widget class="QGraphicsView" name="graphicsView_1">
+       <property name="minimumSize">
+        <size>
+         <width>234</width>
+         <height>234</height>
+        </size>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QGraphicsView" name="graphicsView_0">
+       <property name="minimumSize">
+        <size>
+         <width>234</width>
+         <height>234</height>
+        </size>
+       </property>
+       <property name="verticalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

@@ -105,7 +105,8 @@ void RoundGaugeGraphicsObject::paint(QPainter *painter, const QStyleOptionGraphi
     //
     // Draw value text
     //
-    QString valueStr = QString("%L1").arg(mValue, 2, 'f', 2);
+//    QString valueStr = QString("%L1").arg(mValue, 2, 'f', 1);
+    QString valueStr = QString::number(mValue,'f',1);
     QFont font = painter->font();
     font.setBold(true);
     font.setFixedPitch(true);

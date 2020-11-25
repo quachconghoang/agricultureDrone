@@ -11,6 +11,7 @@
 #include <iostream>
 #include <QStandardItemModel>
 #include "MushroomView.h"
+#include <QSizePolicy>
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -28,8 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
     Qt::ScreenOrientation x = Qt::LandscapeOrientation;
 
     mushroomWidget = new MushroomView(ui->iot_1);
+//    mushroomWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 //    ui->mainWidget->layout()->replaceWidget(ui->iot_1, mushroomWidget);
-
 //    ui->widget_iot = new MushroomView(this);
 
     m_sensors.initHosting();
@@ -37,23 +38,19 @@ MainWindow::MainWindow(QWidget *parent)
         ui->hostBox->addItem(host);
         if(QUrl(host+":1883").isValid()) ui->hostBox->setCurrentIndex(ui->hostBox->findText(host));
     }
-
     m_sensors.loadSensorParameters(ui->hostBox->currentIndex());
 
     QIcon deviceIco = QIcon(":/Images/Resources/machine.png");
-//    deviceIco
     for (int i = 0; i < m_sensors.sensorNodes.size(); ++i) {
         SensorNode node = m_sensors.sensorNodes[i];
         ui->devicesBox->addItem(deviceIco, QString::fromStdString(node.topic_sensor));
-        qDebug() << QString::fromStdString(node.topic_sensor);
+//        qDebug() << QString::fromStdString(node.topic_sensor);
     }
-//    m_current_dev = -1;
-//    ui->devicesBox->setCurrentIndex(m_current_dev);
+    m_current_dev = -1;
+    ui->devicesBox->setCurrentIndex(m_current_dev);
 
     setupMQTT(m_sensors.hostnames[ui->hostBox->currentIndex()],1883);
 
-
-//    qDebug()<<b->geometry();
     /*
     QWidget *widget = new QWidget;
     widget->setWindowFlags(Qt::FramelessWindowHint);
