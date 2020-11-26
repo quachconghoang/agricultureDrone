@@ -10,32 +10,34 @@ MushroomView::MushroomView(QWidget *parent) :
     ui->setupUi(this);
     loadColormap();
 
-    mRoundGaugeViews.resize(4);
+    int num_gauges=4;
+
+    mRoundGaugeViews.resize(num_gauges);
+    mScenes.resize(num_gauges);
+    mRoundGauges.resize(num_gauges);
     mRoundGaugeViews[0] = ui->graphicsView_0;
     mRoundGaugeViews[1] = ui->graphicsView_1;
     mRoundGaugeViews[2] = ui->graphicsView_2;
     mRoundGaugeViews[3] = ui->graphicsView_3;
-    
-//Prepare scenes
-    for (int i = 0; i < mRoundGaugeViews.size(); ++i) {
-        QRect baseRect = mRoundGaugeViews[i]->rect();
-        qDebug() << baseRect;
-    }
 
+    QRect baseRect = ui->graphicsView_0->rect();
     mColor_OuterRing = QColor::fromRgb(160,160,160);
     mColor_Value = QColor::fromRgb(128,128,128);
-
     double testValue = 100;
     QColor stateColor = getColorForValue(testValue);
 
-    QRect baseRect = ui->graphicsView_0->rect();
+//Prepare scenes
+    for (int i = 0; i < mRoundGaugeViews.size(); ++i) {
+        QGraphicsView * _gaugeViews = mRoundGaugeViews[i];
+        _gaugeViews->setDragMode(QGraphicsView::NoDrag);
+        _gaugeViews->setRenderHint(QPainter::Antialiasing);
+        mScenes[i] = new QGraphicsScene(0,0,baseRect.width(),baseRect.height());
+        mRoundGauges[i] = new RoundGaugeGraphicsObject(QRectF(17, 37, 180, 180));
+    }
 
     mScene = new QGraphicsScene(0,0,baseRect.width(),baseRect.height());
 
-    ui->graphicsView_0->setDragMode(QGraphicsView::NoDrag);
-    ui->graphicsView_0->setRenderHint(QPainter::Antialiasing);
     ui->graphicsView_0->setScene(mScene);
-
     mRGauge_Temp = new RoundGaugeGraphicsObject(QRectF(17, 37, 180, 180));
     mScene->addItem(mRGauge_Temp);
     mScene->addText("     Temperature (°C)");
@@ -47,7 +49,6 @@ MushroomView::MushroomView(QWidget *parent) :
     mRGauge_Temp->setValue(testValue);
     mRGauge_Temp->setValueColor(mColor_Value);
     mRGauge_Temp->setRange(0, 100);
-
 }
 
 MushroomView::~MushroomView()

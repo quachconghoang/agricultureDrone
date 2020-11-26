@@ -148,7 +148,7 @@
     </layout>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="hL_2" stretch="0,0">
+    <layout class="QHBoxLayout" name="hL_2" stretch="0">
      <property name="leftMargin">
       <number>3</number>
      </property>
@@ -171,13 +171,6 @@
        </property>
        <property name="text">
         <string>Light</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="pushButton">
-       <property name="text">
-        <string>PushButton</string>
        </property>
       </widget>
      </item>
@@ -209,12 +202,21 @@
         </size>
        </property>
        <property name="text">
-        <string>Temperature</string>
+        <string>Set Temperature</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QSlider" name="horizontalSlider">
+       <property name="minimum">
+        <number>20</number>
+       </property>
+       <property name="maximum">
+        <number>30</number>
+       </property>
+       <property name="value">
+        <number>25</number>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
