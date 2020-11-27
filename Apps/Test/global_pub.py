@@ -37,14 +37,15 @@ mqttc.on_publish = on_publish
 mqttc.on_subscribe = on_subscribe
 # Uncomment to enable debug messages
 # mqttc.on_log = on_log
-mqttc.connect("hoangqc.myftp.org", 1883, 60)
+mqttc.connect("citlab.myftp.org", 1883, 60)
 
 mqttc.loop_start()
 dict = {'t': 100, 'h': 100, 'tW': 100}
 
 while(True):
     dict['t'] = 25 + randint(0,5)
-    dict['h'] = randint(40,80)
+    dict['h'] = 70 + randint(0,30)
+    dict['tW'] = 25 + randint(0,5)
     mess = json.dumps(dict)
     infot = mqttc.publish("sensor/mushroom/001", mess, qos=2)
     infot.wait_for_publish()

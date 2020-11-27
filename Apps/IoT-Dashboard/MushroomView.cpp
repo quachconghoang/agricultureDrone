@@ -1,6 +1,8 @@
 #include "MushroomView.h"
 #include "ui_MushroomView.h"
 #include <QJsonDocument>
+#include <QJsonObject>
+#include <QDateTime>
 #include <QDebug>
 
 MushroomView::MushroomView(QWidget *parent) :
@@ -11,10 +13,10 @@ MushroomView::MushroomView(QWidget *parent) :
     loadColormap();
 
     int num_gauges=4;
-
     mRoundGaugeViews.resize(num_gauges);
     mScenes.resize(num_gauges);
     mRoundGauges.resize(num_gauges);
+    // Assign Views
     mRoundGaugeViews[0] = ui->graphicsView_0;
     mRoundGaugeViews[1] = ui->graphicsView_1;
     mRoundGaugeViews[2] = ui->graphicsView_2;
@@ -22,7 +24,6 @@ MushroomView::MushroomView(QWidget *parent) :
 
     QRect baseRect = ui->graphicsView_0->rect();
     mColor_OuterRing = QColor::fromRgb(160,160,160);
-    mColor_Value = QColor::fromRgb(128,128,128);
     double testValue = 100;
     QColor stateColor = getColorForValue(testValue);
 
@@ -35,25 +36,51 @@ MushroomView::MushroomView(QWidget *parent) :
         mRoundGauges[i] = new RoundGaugeGraphicsObject(QRectF(17, 37, 180, 180));
     }
 
-    mScene = new QGraphicsScene(0,0,baseRect.width(),baseRect.height());
+    setupGauge(0,GAUGE_TEMP);
+    setupGauge(1,GAUGE_MOISTURE);
+    setupGauge(2,GAUGE_TEMP_WATER);
 
-    ui->graphicsView_0->setScene(mScene);
-    mRGauge_Temp = new RoundGaugeGraphicsObject(QRectF(17, 37, 180, 180));
-    mScene->addItem(mRGauge_Temp);
-    mScene->addText("     Temperature (°C)");
-    mRGauge_Temp->setOuterRingColor(mColor_OuterRing);
-    mRGauge_Temp->setGlowRingEnabled(true);
+    mLedToggle = new ToggleButton(10, 8);
+    ui->hL_2->insertWidget(1,mLedToggle);
 
-    mRGauge_Temp->setGlowRingColor(stateColor);
-    mRGauge_Temp->setFontColor(stateColor);
-    mRGauge_Temp->setValue(testValue);
-    mRGauge_Temp->setValueColor(mColor_Value);
-    mRGauge_Temp->setRange(0, 100);
 }
 
 MushroomView::~MushroomView()
 {
     delete ui;
+}
+
+void MushroomView::setupGauge(int viewID, GAUGE_TYPE type) {
+    QGraphicsScene * tempScene = mScenes[viewID];
+    RoundGaugeGraphicsObject * tempGauge = mRoundGauges[viewID];
+    mRoundGaugeViews[viewID]->setScene(tempScene);
+    tempScene->addItem(tempGauge);
+
+    tempGauge->setOuterRingColor(mColor_OuterRing);
+    tempGauge->setGlowRingEnabled(true);
+
+
+    QColor default_color;
+    switch (type) {
+        case GAUGE_MOISTURE:
+            default_color = QColor::fromRgb(100,160,255);
+            tempScene->addText("     Humidity (%):");
+            break;
+        case GAUGE_TEMP_WATER:
+            default_color = QColor::fromRgb(255,255,128);
+            tempScene->addText("     Water Temperature (°C):");
+            break;
+        default:
+            default_color = QColor::fromRgb(255,128,128);
+            tempScene->addText("     Temperature (°C)");
+    }
+
+    tempGauge->setGlowRingColor(default_color);
+    tempGauge->setFontColor(default_color);
+    tempGauge->setValueColor(default_color);
+
+    tempGauge->setRange(0, 100);
+    tempGauge->setValue(50);
 }
 
 void MushroomView::loadColormap() {
@@ -86,8 +113,20 @@ QColor MushroomView::getColorForValue(double value, double _min, double _max, bo
     } else{
         rs = mMapWinter[int(scale*value_norm)];
     }
-
     return rs;
+}
+
+void MushroomView::receiveMessage(const QByteArray &message, const QMqttTopicName &topic) {
+    qDebug() << "receive" << message;
+    QJsonDocument doc = QJsonDocument::fromJson(message);
+    QJsonValue t = doc["t"];
+    QJsonValue h = doc["h"];
+    QJsonValue tW = doc["tW"];
+    qDebug() << t.toDouble() << h.toDouble() << tW.toDouble();
+
+//    for(int i = 0; i < array.size(); i++){
+//        QJsonObject t_obj = array[i].toObject();
+//        hostnames.push_back(t_obj["hostname"].toString());
 }
 
 void MushroomView::setTitle(QString text) {

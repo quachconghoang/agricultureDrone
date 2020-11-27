@@ -7,6 +7,12 @@
 #include "RoundGaugeGraphicsObject.h"
 #include "ToggleButton.h"
 
+enum GAUGE_TYPE{
+    GAUGE_TEMP=0,
+    GAUGE_MOISTURE=1,
+    GAUGE_TEMP_WATER=2
+};
+
 namespace Ui {
 class MushroomView;
 }
@@ -22,20 +28,18 @@ public:
     void setTitle(QString text);
     void setValueFromJSON(QString json);
 
+public slots:
+    void receiveMessage(const QByteArray &message, const QMqttTopicName &topic);
+
 private:
     Ui::MushroomView *ui;
-    QGraphicsScene* mScene;
 
-    RoundGaugeGraphicsObject* mRGauge_Temp;
-    RoundGaugeGraphicsObject* mRGauge_TempWater;
-    RoundGaugeGraphicsObject* mRGauge_Moisture;
-
+    // Screens
     QVector<QGraphicsView*> mRoundGaugeViews;
     QVector<RoundGaugeGraphicsObject*> mRoundGauges;
     QVector<QGraphicsScene*> mScenes;
 
     QColor mColor_OuterRing;
-    QColor mColor_Value;
 
     QVector<QColor> mMapJet;
     QVector<QColor> mMapWinter;
@@ -43,10 +47,9 @@ private:
     ToggleButton * mLedToggle;
 
     void loadColormap();
-    QColor getColorForValue(double value, double _min=0, double _max=100, bool useJet=true);
 
-private slots:
-//    void receiveMessage(const QByteArray &message, const QMqttTopicName &topic);
+    QColor getColorForValue(double value, double _min=0, double _max=100, bool useJet=true);
+    void setupGauge(int viewID, GAUGE_TYPE type=GAUGE_TEMP);
 
 };
 

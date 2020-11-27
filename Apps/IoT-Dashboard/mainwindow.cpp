@@ -51,17 +51,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     setupMQTT(m_sensors.hostnames[ui->hostBox->currentIndex()],1883);
 
-    /*
-    QWidget *widget = new QWidget;
-    widget->setWindowFlags(Qt::FramelessWindowHint);
-    QHBoxLayout layout;
-    widget->setLayout(&layout);
-    ToggleButton *toggleButton1 = new ToggleButton(10, 8);
-    ToggleButton *toggleButton2 = new ToggleButton(10, 12);
-    layout.addWidget(toggleButton1);
-    layout.addWidget(toggleButton2);
-    widget->show();
- */
     connect(ui->devicesBox, SIGNAL(currentIndexChanged(int)), this, SLOT(currentDeviceChanged(int)));
     connect(ui->hostBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateServer(int)));
 }
@@ -76,8 +65,8 @@ void MainWindow::setupMQTT(QString hostName, qint16 port) {
     m_client->setHostname(hostName);
     m_client->setPort(port);
     connect(m_client, &QMqttClient::stateChanged, this, &MainWindow::updateLogStateChange);
-    connect(m_client, &QMqttClient::messageReceived, this,  &MainWindow::receiveMessage);
-
+//    connect(m_client, &QMqttClient::messageReceived, this,  &MainWindow::receiveMessage);
+    connect(m_client, &QMqttClient::messageReceived, mushroomWidget,  &MushroomView::receiveMessage);
     m_client->connectToHost();
 }
 
@@ -109,14 +98,7 @@ void MainWindow::currentDeviceChanged(int dev_id) {
 }
 
 void MainWindow::receiveMessage(const QByteArray &message, const QMqttTopicName &topic) {
-    qDebug() << "receive";
-    const QString content = QDateTime::currentDateTime().toString()
-                            + QLatin1String(" Received Topic: ")
-                            + topic.name()
-                            + QLatin1String(" Message: ")
-                            + message
-                            + QLatin1Char('\n');
-    qDebug() << content;
+
 //    ui->devicesView->addItem(content);
 }
 
