@@ -19,8 +19,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-//    this->showFullScreen();
-//    this->setWindowFlags(Qt::FramelessWindowHint);
 
     QScreen * screen = QApplication::screens().at(0);
     QSize screenSize = screen->availableSize();
@@ -28,10 +26,17 @@ MainWindow::MainWindow(QWidget *parent)
     Qt::ScreenOrientation orient = screen->orientation();
     Qt::ScreenOrientation x = Qt::LandscapeOrientation;
 
-    mushroomWidget = new MushroomView(ui->iot_1);
-//    mushroomWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-//    ui->mainWidget->layout()->replaceWidget(ui->iot_1, mushroomWidget);
-//    ui->widget_iot = new MushroomView(this);
+    QSize defSize = ui->iot_1->size();
+    QSize curSize = this->size();
+    #ifdef Q_OS_ANDROID
+    curSize = screenSize;
+    #endif
+    qDebug() << this->size();
+    double scl = double (curSize.width())/double(defSize.width());
+    mushroomWidget = new MushroomView(ui->iot_1,scl);
+
+//    mushroomWidget->setMinimumWidth(curSize.width());
+//    mushroomWidget->setMinimumHeight(defSize.height()*curSize.width() / defSize.width());
 
     m_sensors.initHosting();
     for (QString host : m_sensors.hostnames){

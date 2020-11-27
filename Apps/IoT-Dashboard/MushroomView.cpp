@@ -5,12 +5,15 @@
 #include <QDateTime>
 #include <QDebug>
 
-MushroomView::MushroomView(QWidget *parent) :
+MushroomView::MushroomView(QWidget *parent, double scl) :
     QWidget(parent),
     ui(new Ui::MushroomView)
 {
     ui->setupUi(this);
     loadColormap();
+//    qDebug() <<scl;
+    this->setMinimumWidth(this->minimumWidth()*scl);
+    this->setMinimumHeight(this->minimumHeight()*scl);
 
     int num_gauges=4;
     mRoundGaugeViews.resize(num_gauges);
@@ -24,25 +27,25 @@ MushroomView::MushroomView(QWidget *parent) :
 
     QRect baseRect = ui->graphicsView_0->rect();
     mColor_OuterRing = QColor::fromRgb(160,160,160);
-    double testValue = 100;
-    QColor stateColor = getColorForValue(testValue);
 
 //Prepare scenes
     for (int i = 0; i < mRoundGaugeViews.size(); ++i) {
         QGraphicsView * _gaugeViews = mRoundGaugeViews[i];
         _gaugeViews->setDragMode(QGraphicsView::NoDrag);
         _gaugeViews->setRenderHint(QPainter::Antialiasing);
-        mScenes[i] = new QGraphicsScene(0,0,baseRect.width(),baseRect.height());
-        mRoundGauges[i] = new RoundGaugeGraphicsObject(QRectF(17, 37, 180, 180));
+
+        mScenes[i] = new QGraphicsScene(0,0,baseRect.width()*scl,baseRect.height()*scl);
+        mRoundGauges[i] = new RoundGaugeGraphicsObject(QRectF(27*scl, 37*scl, 180*scl, 180*scl));
     }
 
     setupGauge(0,GAUGE_TEMP);
     setupGauge(1,GAUGE_MOISTURE);
     setupGauge(2,GAUGE_TEMP_WATER);
 
-    mLedToggle = new ToggleButton(10, 8);
+    mLedToggle = new ToggleButton(15*scl, 10*scl);
+    mPumpToggle = new ToggleButton(15*scl, 10*scl);
     ui->hL_2->insertWidget(1,mLedToggle);
-
+    ui->hL_2->insertWidget(4,mPumpToggle);
 }
 
 MushroomView::~MushroomView()
@@ -64,15 +67,15 @@ void MushroomView::setupGauge(int viewID, GAUGE_TYPE type) {
     switch (type) {
         case GAUGE_MOISTURE:
             default_color = QColor::fromRgb(100,160,255);
-            tempScene->addText("     Humidity (%)");
+            tempScene->addText("Humidity (%)");
             break;
         case GAUGE_TEMP_WATER:
             default_color = QColor::fromRgb(255,255,128);
-            tempScene->addText("     Water Temperature (°C)");
+            tempScene->addText("Water Temperature (°C)");
             break;
         default:
             default_color = QColor::fromRgb(255,128,128);
-            tempScene->addText("     Temperature (°C)");
+            tempScene->addText("Temperature (°C)");
     }
 
     tempGauge->setStateColor(default_color);
@@ -131,13 +134,4 @@ void MushroomView::receiveMessage(const QByteArray &message, const QMqttTopicNam
     mRoundGauges[0]->setStateColor(temp_state_color);
     mRoundGauges[1]->setStateColor(humid_state_color);
     mRoundGauges[2]->setStateColor(wTemp_state_color);
-
-}
-
-void MushroomView::setTitle(QString text) {
-
-}
-
-void MushroomView::setValueFromJSON(QString json) {
-
 }

@@ -22,11 +22,8 @@ class MushroomView : public QWidget
     Q_OBJECT
 
 public:
-    explicit MushroomView(QWidget *parent = nullptr);
+    explicit MushroomView(QWidget *parent = nullptr, double scl=1);
     ~MushroomView();
-
-    void setTitle(QString text);
-    void setValueFromJSON(QString json);
 
 public slots:
     void receiveMessage(const QByteArray &message, const QMqttTopicName &topic);
@@ -45,6 +42,7 @@ private:
     QVector<QColor> mMapWinter;
 
     ToggleButton * mLedToggle;
+    ToggleButton * mPumpToggle;
 
     void loadColormap();
 
