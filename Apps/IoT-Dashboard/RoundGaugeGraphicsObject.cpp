@@ -276,6 +276,12 @@ void RoundGaugeGraphicsObject::setOuterRingColor(const QColor &color)
     emit outerRingColorChanged(mOuterRingColor);
 }
 
+void RoundGaugeGraphicsObject::setStateColor(const QColor &color) {
+    setValueColor(color);
+    setFontColor(color);
+    setGlowRingColor(color);
+}
+
 void RoundGaugeGraphicsObject::handleDialAnimationValueChanged(const QVariant &newValue)
 {
     mGaugeValue = newValue.toDouble();

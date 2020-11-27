@@ -51,6 +51,7 @@ public slots:
 
     void setRange(qreal min, qreal max);
 
+    void setStateColor(const QColor& color);
 
 private slots:
     void handleDialAnimationValueChanged(const QVariant& newValue);

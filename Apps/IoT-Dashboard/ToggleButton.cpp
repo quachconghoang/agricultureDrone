@@ -3,7 +3,8 @@
 #include <QtCore/QCoreApplication>
 #include <QtCore/QPropertyAnimation> 
 #include <QtGui/QPainter> 
-#include <QtGui/QMouseEvent> 
+#include <QtGui/QMouseEvent>
+#include <QPainterPath>
 
 ///<summary>
 /// Toggle button has 2 different design. In the first design, if the ball (thumb) radius is 

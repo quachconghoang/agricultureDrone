@@ -64,20 +64,18 @@ void MushroomView::setupGauge(int viewID, GAUGE_TYPE type) {
     switch (type) {
         case GAUGE_MOISTURE:
             default_color = QColor::fromRgb(100,160,255);
-            tempScene->addText("     Humidity (%):");
+            tempScene->addText("     Humidity (%)");
             break;
         case GAUGE_TEMP_WATER:
             default_color = QColor::fromRgb(255,255,128);
-            tempScene->addText("     Water Temperature (°C):");
+            tempScene->addText("     Water Temperature (°C)");
             break;
         default:
             default_color = QColor::fromRgb(255,128,128);
             tempScene->addText("     Temperature (°C)");
     }
 
-    tempGauge->setGlowRingColor(default_color);
-    tempGauge->setFontColor(default_color);
-    tempGauge->setValueColor(default_color);
+    tempGauge->setStateColor(default_color);
 
     tempGauge->setRange(0, 100);
     tempGauge->setValue(50);
@@ -117,16 +115,23 @@ QColor MushroomView::getColorForValue(double value, double _min, double _max, bo
 }
 
 void MushroomView::receiveMessage(const QByteArray &message, const QMqttTopicName &topic) {
-    qDebug() << "receive" << message;
+//    qDebug() << "receive" << message;
     QJsonDocument doc = QJsonDocument::fromJson(message);
-    QJsonValue t = doc["t"];
-    QJsonValue h = doc["h"];
-    QJsonValue tW = doc["tW"];
-    qDebug() << t.toDouble() << h.toDouble() << tW.toDouble();
+    double t = doc["t"].toDouble();
+    double h = doc["h"].toDouble();
+    double tW = doc["tW"].toDouble();
+//    qDebug() << t << h << tW;
+    mRoundGauges[0]->setValue(t);
+    mRoundGauges[1]->setValue(h);
+    mRoundGauges[2]->setValue(tW);
 
-//    for(int i = 0; i < array.size(); i++){
-//        QJsonObject t_obj = array[i].toObject();
-//        hostnames.push_back(t_obj["hostname"].toString());
+    QColor temp_state_color = getColorForValue(t, 15,40);
+    QColor humid_state_color = getColorForValue(h,50,95, false);
+    QColor wTemp_state_color = getColorForValue(tW, 15, 40);
+    mRoundGauges[0]->setStateColor(temp_state_color);
+    mRoundGauges[1]->setStateColor(humid_state_color);
+    mRoundGauges[2]->setStateColor(wTemp_state_color);
+
 }
 
 void MushroomView::setTitle(QString text) {

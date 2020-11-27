@@ -37,7 +37,7 @@ mqttc.on_publish = on_publish
 mqttc.on_subscribe = on_subscribe
 # Uncomment to enable debug messages
 # mqttc.on_log = on_log
-mqttc.connect("citlab.myftp.org", 1883, 60)
+mqttc.connect("hoangqc.myftp.org", 1883, 60)
 
 mqttc.loop_start()
 dict = {'t': 100, 'h': 100, 'tW': 100}
