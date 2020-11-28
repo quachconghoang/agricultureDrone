@@ -58,6 +58,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->devicesBox, SIGNAL(currentIndexChanged(int)), this, SLOT(currentDeviceChanged(int)));
     connect(ui->hostBox, SIGNAL(currentIndexChanged(int)), this, SLOT(updateServer(int)));
+    connect(mushroomWidget, SIGNAL(pushUpdate(QString)), this,  SLOT(controlMessage(QString)));
 }
 
 MainWindow::~MainWindow()
@@ -102,8 +103,8 @@ void MainWindow::currentDeviceChanged(int dev_id) {
     if (!subscription) qDebug()<<"Could not subscribe. Is there a valid connection?";
 }
 
-void MainWindow::receiveMessage(const QByteArray &message, const QMqttTopicName &topic) {
-
+void MainWindow::controlMessage(QString msg) {
+    qDebug() << msg;
 //    ui->devicesView->addItem(content);
 }
 

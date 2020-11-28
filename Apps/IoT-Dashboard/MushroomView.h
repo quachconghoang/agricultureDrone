@@ -25,9 +25,13 @@ public:
     explicit MushroomView(QWidget *parent = nullptr, double scl=1);
     ~MushroomView();
 
+    QString stateString;
+signals:
+    void pushUpdate(QString message);
+
 public slots:
     void receiveMessage(const QByteArray &message, const QMqttTopicName &topic);
-
+    void forceUpdate();
 private:
     Ui::MushroomView *ui;
 
@@ -48,7 +52,6 @@ private:
 
     QColor getColorForValue(double value, double _min=0, double _max=100, bool useJet=true);
     void setupGauge(int viewID, GAUGE_TYPE type=GAUGE_TEMP);
-
 };
 
 #endif // MUSHROOMVIEW_H

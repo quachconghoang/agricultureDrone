@@ -46,6 +46,9 @@ MushroomView::MushroomView(QWidget *parent, double scl) :
     mPumpToggle = new ToggleButton(15*scl, 10*scl);
     ui->hL_2->insertWidget(1,mLedToggle);
     ui->hL_2->insertWidget(4,mPumpToggle);
+
+    connect(ui->updateBtn, SIGNAL(pressed()), this, SLOT(forceUpdate()));
+
 }
 
 MushroomView::~MushroomView()
@@ -134,4 +137,16 @@ void MushroomView::receiveMessage(const QByteArray &message, const QMqttTopicNam
     mRoundGauges[0]->setStateColor(temp_state_color);
     mRoundGauges[1]->setStateColor(humid_state_color);
     mRoundGauges[2]->setStateColor(wTemp_state_color);
+}
+
+void MushroomView::forceUpdate() {
+//    qDebug() << mLedToggle->isChecked() << mPumpToggle->isChecked() << ui->tempSlider->value();
+    QJsonObject o;
+    o["l"] = int8_t(mLedToggle->isChecked());
+    o["p"] = int8_t(mPumpToggle->isChecked());
+    o["t"] = int8_t(ui->tempSlider->value());
+    QJsonDocument doc(o);
+    stateString = doc.toJson(QJsonDocument::Compact);
+//    qDebug() << stateString;
+    emit pushUpdate(stateString);
 }
